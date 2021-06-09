@@ -1,5 +1,6 @@
 import tkinter
 import os
+import GuiConstant as str
 from tkinter import filedialog
 
 
@@ -24,14 +25,13 @@ class Gui:
         self.entry=tkinter.Entry(self.window)
         self.entry.grid(row=1, column=0)
         
-        
         # 버튼
-
-        button = tkinter.Button(self.window, overrelief="solid", width=15, command=self.onClick, repeatdelay=1000, repeatinterval=100, text="Button")
+        button = tkinter.Button(self.window, overrelief="solid", width=15, command=self.onClick, repeatdelay=1000, repeatinterval=100, text=str.BUTTON_OEPN)
         button.grid(row=1, column=1)
 
         listbox = tkinter.Listbox(self.window, selectmode='extended', height=0)
         listbox.insert(0, "1번")
+
         listbox.insert(1, "2번")
         listbox.insert(2, "2번")
         listbox.insert(3, "2번")
@@ -41,11 +41,8 @@ class Gui:
 
         menubar=tkinter.Menu(self.window)
         menu_1=tkinter.Menu(menubar, tearoff=0)
-        menu_1.add_command(label="하위 메뉴 1-1", command=self.onClick)
-        menu_1.add_command(label="하위 메뉴 1-2", command=self.onClick)
-        menu_1.add_separator()
-        menu_1.add_command(label="하위 메뉴 1-3")
-        menubar.add_cascade(label="상위 메뉴 1", menu=menu_1)
+        menu_1.add_command(label=str.MENU_EXIT, command=self.onClick)
+        menubar.add_cascade(label=str.MENU_BAR, menu=menu_1)
 
         self.window.config(menu=menubar)
 
@@ -60,6 +57,8 @@ class Gui:
         self.entry.delete(0, len(dir))
         self.entry.insert(0, dir)
         return dir
+    
+    
 
 if __name__ == '__main__':
     Example = Gui()
