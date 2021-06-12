@@ -2,7 +2,7 @@ import tkinter
 import os
 import GuiConstant as str
 from tkinter import filedialog
-
+from functools import partial
 
 from openpyxl.descriptors.base import String
 
@@ -19,15 +19,23 @@ class Gui:
         self.window.resizable(True, True)
 
         label=tkinter.Label(self.window, text="キーワード検索ツール", width=40, height=3, fg="black", relief="solid")
-        label.grid(row=0, column=0)
+        label.grid(row=0, column=0, columnspan=4)
 
         # 입력박스
         self.entry=tkinter.Entry(self.window)
         self.entry.grid(row=1, column=0)
         
         # 버튼
-        button = tkinter.Button(self.window, overrelief="solid", width=15, command=self.onClick, repeatdelay=1000, repeatinterval=100, text=str.BUTTON_OEPN)
+        button = tkinter.Button(self.window, overrelief="solid", width=15, command=partial(self.onClick, "aaa"), repeatdelay=1000, repeatinterval=100, text=str.BUTTON_OEPN)
         button.grid(row=1, column=1)
+
+        # 검색박스 
+        self.entryFind=tkinter.Entry(self.window)
+        self.entryFind.grid(row=1, column=2)
+
+        # 검색 버튼 
+        button = tkinter.Button(self.window, overrelief="solid", width=15, command=partial(self.onFind, "aaa"), repeatdelay=1000, repeatinterval=100, text=str.BUTTON_FIND)
+        button.grid(row=1, column=3)
 
         listbox = tkinter.Listbox(self.window, selectmode='extended', height=0)
         listbox.insert(0, "1번")
@@ -39,18 +47,17 @@ class Gui:
         listbox.grid(row=2, column=0)
 
 
-        menubar=tkinter.Menu(self.window)
-        menu_1=tkinter.Menu(menubar, tearoff=0)
-        menu_1.add_command(label=str.MENU_EXIT, command=self.onClick)
-        menubar.add_cascade(label=str.MENU_BAR, menu=menu_1)
-
-        self.window.config(menu=menubar)
+        # menubar=tkinter.Menu(self.window)
+        # menu_1=tkinter.Menu(menubar, tearoff=0)
+        # menu_1.add_command(label=str.MENU_EXIT, command=self.ExitApp)
+        # menubar.add_cascade(label=str.MENU_BAR, menu=menu_1)
+        # self.window.config(menu=menubar)
 
         # 윈도우가 종료될 때 까지 실행
         self.window.mainloop()
     
-    def onClick(self):
-        print("on click")
+    def onClick(self, msg):
+        print(msg)
         dir = filedialog.askdirectory(initialdir="/", title="select directory")
         print(dir)
         #pathString = os.path.basename(dir)
@@ -58,7 +65,11 @@ class Gui:
         self.entry.insert(0, dir)
         return dir
     
-    
+    # https://www.delftstack.com/ko/howto/python-tkinter/how-to-get-the-tkinter-label-text/
+    def onFind(self, msg):
+        print(self.entryFind.get())
+        print(self.entry.get())
+
 
 if __name__ == '__main__':
     Example = Gui()
