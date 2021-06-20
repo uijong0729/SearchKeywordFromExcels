@@ -1,9 +1,12 @@
 import tkinter
 import os
+from tkinter.constants import X
 import GuiConstant as str
 from tkinter import filedialog
 from functools import partial
-
+import xlrd as xls
+import openpyxl as xlsx
+from openpyxl import load_workbook
 from openpyxl.descriptors.base import String
 
 # 대괄호([])와 소괄호(())안의 공백은 피합니다.
@@ -67,9 +70,41 @@ class Gui:
     
     # https://www.delftstack.com/ko/howto/python-tkinter/how-to-get-the-tkinter-label-text/
     def onFind(self, msg):
-        print(self.entryFind.get())
-        print(self.entry.get())
+        # 필요 정보 취득
+        path = self.entry.get()
+        keyword = self.entryFind.get()
+        print(path)
+        # print(keyword)
 
+        # 디렉토리내 검색
+        list = os.listdir(path)
+        for fileOne in list:
+            full_filename = (os.path.join(path, fileOne)).replace("/", "\\")
+            print(full_filename)
+            if "xlsx" in fileOne:
+                print("xlsx")
+                # https://openpyxl.readthedocs.io/en/stable/
+                wb = load_workbook(filename = fileOne)
+                #sheet_ranges = wb['range names']
+                #print(sheet_ranges['D18'].value)
+            elif "xls" in fileOne:
+                print("xls")
+                book = xls.open_workbook(fileOne)
+                # sheetNames = book.sheet_names()
+                # if sheetNames.find(keyword) > 0:
+                #    print(sheetNames)
+
+                #  iter는 객체의 __iter__ 메서드를 호출해주고, next는 객체의 __next__ 메서드를 호출해줍니다. 
+                it = iter(book)
+                while (True):
+                    sh = next(it, str.READ_FAIL)
+                    if sh == str.READ_FAIL:
+                        break
+                    elif sh.name.find(keyword) > 0:
+                        print(sh.name)
+                    else:
+                        for rx in range(sh.nrows):
+                            print(sh.row(rx))
 
 if __name__ == '__main__':
     Example = Gui()
