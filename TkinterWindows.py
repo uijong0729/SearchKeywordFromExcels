@@ -104,7 +104,10 @@ class Gui:
                         print(sh.name)
                     else:
                         for rx in range(sh.nrows):
-                            print(sh.row(rx))
+                            cell_array = sh.row_values(rx)
+                            for rc in cell_array:
+                                print(rc)
+
 
 if __name__ == '__main__':
     Example = Gui()
