@@ -40,16 +40,6 @@ class Gui:
         button = tkinter.Button(self.window, overrelief="solid", width=15, command=partial(self.onFind, "aaa"), repeatdelay=1000, repeatinterval=100, text=str.BUTTON_FIND)
         button.grid(row=1, column=3)
 
-        listbox = tkinter.Listbox(self.window, selectmode='extended', height=0)
-        listbox.insert(0, "1번")
-
-        listbox.insert(1, "2번")
-        listbox.insert(2, "2번")
-        listbox.insert(3, "2번")
-        listbox.insert(4, "3번")
-        listbox.grid(row=2, column=0)
-
-
         # menubar=tkinter.Menu(self.window)
         # menu_1=tkinter.Menu(menubar, tearoff=0)
         # menu_1.add_command(label=str.MENU_EXIT, command=self.ExitApp)
@@ -75,6 +65,7 @@ class Gui:
         keyword = self.entryFind.get()
         print(path)
         # print(keyword)
+        result_list = [[], []]
 
         # 디렉토리내 검색
         list = os.listdir(path)
@@ -101,12 +92,38 @@ class Gui:
                     if sh == str.READ_FAIL:
                         break
                     elif sh.name.find(keyword) > 0:
-                        print(sh.name)
+                        # print(sh.name)
+                        result_list[1].append(sh.name)
+                        result_list[0].append(full_filename)
                     else:
                         for rx in range(sh.nrows):
                             cell_array = sh.row_values(rx)
                             for rc in cell_array:
-                                print(rc)
+                                result_list[1].append(rc)
+                                result_list[0].append(full_filename)
+                                #try:
+                                #    if (keyword in rc):
+                                #        result_list[1].append(rc)
+                                #        result_list[0].append(full_filename)
+                                #except TypeError:
+                                #    print("pass type error")
+        # list 출력
+        if len(result_list[1]) > 0:
+            listbox0 = tkinter.Listbox(self.window, selectmode='extended', height=0)
+            listbox1 = tkinter.Listbox(self.window, selectmode='extended', height=0)
+            listbox0.grid_forget()
+            listbox1.grid_forget()
+            argListIdx = 0
+            for content in result_list[1]:
+                listbox0.insert(argListIdx, content)
+                argListIdx = argListIdx + 1
+            listbox0.grid(row=2, column=1)
+            
+            argListIdx = 0
+            for content in result_list[0]:
+                listbox1.insert(argListIdx, content)
+                argListIdx = argListIdx + 1
+            listbox1.grid(row=2, column=0)
 
 
 if __name__ == '__main__':
