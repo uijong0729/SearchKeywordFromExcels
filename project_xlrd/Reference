@@ -25,3 +25,10 @@ https://wikidocs.net/20557
 
 # 파이썬 코딩스타일
 https://wikidocs.net/20559
+
+
+# git
+git pull origin master
+git add *
+git commit -m ""
+git push origin master 
