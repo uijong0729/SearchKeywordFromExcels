@@ -8,6 +8,7 @@ import xlrd as xls
 import openpyxl as xlsx
 from openpyxl import load_workbook
 from openpyxl.descriptors.base import String
+import CellConverter as xcc
 
 # 대괄호([])와 소괄호(())안의 공백은 피합니다.
 # 쉼표(,), 쌍점(:)과 쌍반점(;) 앞의 공백은 피합니다.
@@ -76,37 +77,15 @@ class Gui:
                 print("xlsx")
                 # https://openpyxl.readthedocs.io/en/stable/
                 wb = load_workbook(filename = fileOne)
-                #sheet_ranges = wb['range names']
-                #print(sheet_ranges['D18'].value)
+                xc = xcc.XlsxCellConverter()
+                xc.read_all(wb)
+
             elif "xls" in fileOne:
                 print("xls")
                 book = xls.open_workbook(fileOne)
-                # sheetNames = book.sheet_names()
-                # if sheetNames.find(keyword) > 0:
-                #    print(sheetNames)
+                xc = xcc.XlsCellConverter()
+                xc.read_all(book)
 
-                #  iter는 객체의 __iter__ 메서드를 호출해주고, next는 객체의 __next__ 메서드를 호출해줍니다. 
-                it = iter(book)
-                while (True):
-                    sh = next(it, str.READ_FAIL)
-                    if sh == str.READ_FAIL:
-                        break
-                    elif sh.name.find(keyword) > 0:
-                        # print(sh.name)
-                        result_list[1].append(sh.name)
-                        result_list[0].append(full_filename)
-                    else:
-                        for rx in range(sh.nrows):
-                            cell_array = sh.row_values(rx)
-                            for rc in cell_array:
-                                result_list[1].append(rc)
-                                result_list[0].append(full_filename)
-                                #try:
-                                #    if (keyword in rc):
-                                #        result_list[1].append(rc)
-                                #        result_list[0].append(full_filename)
-                                #except TypeError:
-                                #    print("pass type error")
         # list 출력
         if len(result_list[1]) > 0:
             listbox0 = tkinter.Listbox(self.window, selectmode='extended', height=0)
