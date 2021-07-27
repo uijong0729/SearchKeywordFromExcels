@@ -38,6 +38,7 @@ class Gui:
         self.entryFind.grid(row=1, column=2)
 
         # 검색 버튼 
+        # TODO : 검색시 숫자인지 확인 (숫자인 경우 검색 취소)
         button = tkinter.Button(self.window, overrelief="solid", width=15, command=partial(self.onFind, "aaa"), repeatdelay=1000, repeatinterval=100, text=str.BUTTON_FIND)
         button.grid(row=1, column=3)
 
